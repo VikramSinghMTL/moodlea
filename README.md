@@ -32,14 +32,11 @@ This bookmarklet simplifies the process of extracting grades from Moodle's grade
 
 ## Resources
 
--   **Video Tutorial**
-    [Watch this instructional video](https://www.youtube.com/embed/Uah-58YN8gY) for a detailed walkthrough.
+-   [Watch this instructional video](https://www.youtube.com/embed/Uah-58YN8gY) for a detailed walkthrough.
 
--   **Contact**
-    If you encounter any issues, feel free to [email me](mailto:vikram.singh@johnabbott.qc.ca).
+-   If you encounter any issues, feel free to [email me](mailto:vikram.singh@johnabbott.qc.ca).
 
--   **Source Code**
-    View the project on [GitHub](https://github.com/VikramSinghMTL/moodlea).
+-   View the project on [GitHub](https://github.com/VikramSinghMTL/moodlea).
 
 ## License
 
