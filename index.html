@@ -13,72 +13,149 @@
 			rel="stylesheet"
 		/>
 		<style>
+			:root {
+				color-scheme: light dark;
+
+				/* Latte (Light) Theme */
+				--latte-bg: #eff1f5; /* Base */
+				--latte-surface: #ffffff; /* Surface 0 */
+				--latte-accent: #1e66f5; /* Blue */
+				--latte-text: #4c4f69; /* Text */
+				--latte-subtext: #6c6f85; /* Subtext 1 */
+				--latte-muted: #9ca0b0; /* Overlay 1 */
+
+				/* Mocha (Dark) Theme */
+				--mocha-bg: #1e1e2e; /* Base */
+				--mocha-surface: #313244; /* Surface 0 */
+				--mocha-accent: #89b4fa; /* Blue */
+				--mocha-text: #cdd6f4; /* Text */
+				--mocha-subtext: #a6adc8; /* Subtext 1 */
+				--mocha-muted: #585b70; /* Overlay 1 */
+			}
+
+			@keyframes jitterRotate {
+				0% {
+					transform: rotate(0deg);
+				}
+				46% {
+					transform: rotate(0deg);
+				}
+				48% {
+					transform: rotate(3deg);
+				}
+				50% {
+					transform: rotate(-3deg);
+				}
+				52% {
+					transform: rotate(3deg);
+				}
+				54% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(0deg);
+				}
+			}
+
 			body {
-				font-family: 'Inter', sans-serif;
+				background-color: light-dark(var(--latte-bg), var(--mocha-bg));
+				color: light-dark(var(--latte-text), var(--mocha-text));
 				margin: 0;
 				padding: 0;
-				background-color: #f9f9f9;
-				color: #333;
+				font-family: 'Inter', sans-serif;
 				line-height: 1.6;
 			}
+
 			header {
-				background-color: #007bff;
+				background-color: light-dark(
+					var(--latte-accent),
+					var(--mocha-accent)
+				);
 				color: white;
 				padding: 20px 0;
 				text-align: center;
 			}
+
 			header h1 {
 				margin: 0;
 				font-weight: 700;
 				font-size: 2rem;
 			}
+
 			main {
-				padding: 3em;
+				background-color: light-dark(
+					var(--latte-surface),
+					var(--mocha-surface)
+				);
+				color: light-dark(var(--latte-text), var(--mocha-text));
+				padding: 2em;
 				max-width: 800px;
 				margin: 0 auto;
-				background: white;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 				border-radius: 0 0 8px 8px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 			}
-			h2 {
-				color: #0056b3;
-				margin-top: 1.5em;
-			}
-			#bookmarklet {
-				display: inline-block;
-				padding: 12px 20px;
-				background-color: #007bff;
-				color: white;
+
+			a {
+				color: light-dark(var(--latte-accent), var(--mocha-accent));
 				text-decoration: none;
-				border-radius: 5px;
-				font-weight: 500;
-				font-size: 1rem;
-				transition: background-color 0.3s;
 			}
-			#bookmarklet:hover {
-				background-color: #0056b3;
+
+			a:hover {
+				text-decoration: underline;
 			}
-			ul,
-			ol {
-				margin: 10px 0 20px 20px;
-				padding: 0;
-			}
-			li {
-				margin-bottom: 10px;
-			}
-			pre {
-				background: #f4f4f4;
-				padding: 15px;
-				border: 1px solid #ddd;
-				border-radius: 5px;
-				overflow-x: auto;
-				font-size: 0.9rem;
-			}
+
 			footer {
 				text-align: center;
 				margin: 20px 0;
-				color: #666;
-				font-size: 0.85rem;
+				color: light-dark(var(--latte-subtext), var(--mocha-subtext));
+			}
+
+			#bookmarklet {
+				display: inline-block;
+				padding: 12px 20px;
+				background-color: light-dark(
+					var(--latte-accent),
+					var(--mocha-accent)
+				);
+				color: white;
+				text-decoration: none;
+				border-radius: 3rem;
+				font-weight: 500;
+				font-size: 1.5rem;
+				animation: jitterRotate 5s ease-in-out infinite;
+				transition: background-color 0.3s;
+			}
+
+			#bookmarklet:hover {
+				background-color: light-dark(#1c5dd1, #7295d4);
+			}
+
+			ul,
+			ol {
+				margin: 10px 0 20px 40px;
+				padding: 0;
+				color: light-dark(var(--latte-text), var(--mocha-text));
+			}
+
+			pre {
+				background: light-dark(var(--latte-muted), var(--mocha-muted));
+				padding: 1em;
+				border-radius: 8px;
+				overflow-x: auto;
+			}
+
+			code {
+				color: light-dark(var(--latte-accent), var(--mocha-accent));
+			}
+
+			.theme-colored path {
+				fill: light-dark(var(--latte-accent), var(--mocha-accent));
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				#bookmarklet {
+					animation: none;
+				}
 			}
 		</style>
 		<script>
@@ -112,8 +189,78 @@
 			<p>
 				This bookmarklet helps you extract grades from the Moodle
 				gradebook and easily transfer them to Lea's "Import Results"
-				page.
+				page. Drag the button below to your bookmarks bar to use it:
 			</p>
+
+			<div
+				style="
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 50px;
+				"
+			>
+				<!-- Left Arrow -->
+				<svg
+					class="theme-colored"
+					style="height: 100px; width: auto"
+					fill="#007bff"
+					version="1.1"
+					id="Capa_1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 370.353 370.353"
+					xml:space="preserve"
+				>
+					<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+					<g
+						id="SVGRepo_tracerCarrier"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					></g>
+					<g id="SVGRepo_iconCarrier">
+						<g>
+							<path
+								d="M368.432,166.578c-23.256-19.584-42.84-42.84-63.648-64.872c-11.016-11.628-28.151-34.884-46.512-36.108 c-1.224-1.836-3.06-3.06-7.344-2.448c-2.448,0.612-4.284,2.448-4.896,4.896c-3.672,14.076-3.06,28.764-3.06,43.452 c-53.856-7.344-116.893,19.584-159.732,48.348C36.115,191.057-0.605,243.078,0.007,301.217c0,2.448,1.836,3.672,3.672,4.284 c1.836,1.836,4.284,2.448,6.732,1.224c70.992-50.184,145.044-94.247,235.009-78.947h0.611c-5.508,17.748-6.119,37.943-6.119,56.304 c0,5.508,4.896,7.344,8.567,6.732c1.836,2.447,6.12,4.283,9.18,1.224c40.393-33.66,84.456-71.604,111.385-117.503 C370.88,172.698,370.88,168.414,368.432,166.578z M348.235,183.102c-10.403,15.3-23.868,28.764-37.332,42.228 c-18.359,18.36-39.168,34.272-56.916,53.244c0-16.524-0.611-33.048,0.612-50.185c0-1.836-0.612-3.06-1.836-3.672 c1.836-3.672,1.224-8.567-3.672-9.792c-88.741-18.972-170.749,23.256-239.292,77.112c9.18-53.856,41.004-94.248,86.904-124.848 s93.637-36.72,146.269-42.84v0.612c-0.612,4.896,7.344,5.508,8.568,1.224c0-1.224,0.611-1.836,0.611-3.06 c3.672-1.836,4.896-6.732,1.836-8.568c1.836-9.792,2.448-19.584,3.672-29.376c0-1.836,0.612-4.896,1.225-7.956 c7.956,10.404,21.42,19.584,30.6,28.764c17.748,18.36,34.272,37.944,52.632,56.304 C351.907,170.862,356.191,170.862,348.235,183.102z"
+							></path>
+						</g>
+					</g>
+				</svg>
+
+				<!-- Bookmarklet Button -->
+				<a id="bookmarklet" href="#">Copy Grades</a>
+
+				<!-- Right Arrow -->
+				<svg
+					class="theme-colored"
+					style="
+						height: 100px;
+						width: auto;
+						transform: rotate(180deg);
+					"
+					fill="#007bff"
+					version="1.1"
+					id="Capa_1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 370.353 370.353"
+					xml:space="preserve"
+				>
+					<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+					<g
+						id="SVGRepo_tracerCarrier"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					></g>
+					<g id="SVGRepo_iconCarrier">
+						<g>
+							<path
+								d="M368.432,166.578c-23.256-19.584-42.84-42.84-63.648-64.872c-11.016-11.628-28.151-34.884-46.512-36.108 c-1.224-1.836-3.06-3.06-7.344-2.448c-2.448,0.612-4.284,2.448-4.896,4.896c-3.672,14.076-3.06,28.764-3.06,43.452 c-53.856-7.344-116.893,19.584-159.732,48.348C36.115,191.057-0.605,243.078,0.007,301.217c0,2.448,1.836,3.672,3.672,4.284 c1.836,1.836,4.284,2.448,6.732,1.224c70.992-50.184,145.044-94.247,235.009-78.947h0.611c-5.508,17.748-6.119,37.943-6.119,56.304 c0,5.508,4.896,7.344,8.567,6.732c1.836,2.447,6.12,4.283,9.18,1.224c40.393-33.66,84.456-71.604,111.385-117.503 C370.88,172.698,370.88,168.414,368.432,166.578z M348.235,183.102c-10.403,15.3-23.868,28.764-37.332,42.228 c-18.359,18.36-39.168,34.272-56.916,53.244c0-16.524-0.611-33.048,0.612-50.185c0-1.836-0.612-3.06-1.836-3.672 c1.836-3.672,1.224-8.567-3.672-9.792c-88.741-18.972-170.749,23.256-239.292,77.112c9.18-53.856,41.004-94.248,86.904-124.848 s93.637-36.72,146.269-42.84v0.612c-0.612,4.896,7.344,5.508,8.568,1.224c0-1.224,0.611-1.836,0.611-3.06 c3.672-1.836,4.896-6.732,1.836-8.568c1.836-9.792,2.448-19.584,3.672-29.376c0-1.836,0.612-4.896,1.225-7.956 c7.956,10.404,21.42,19.584,30.6,28.764c17.748,18.36,34.272,37.944,52.632,56.304 C351.907,170.862,356.191,170.862,348.235,183.102z"
+							></path>
+						</g>
+					</g>
+				</svg>
+			</div>
 
 			<h2>How to Use</h2>
 			<div
@@ -126,7 +273,7 @@
 				"
 			>
 				<iframe
-					src="https://www.youtube.com/embed/Uah-58YN8gY"
+					src="https://www.youtube.com/embed/t1dERxcftco"
 					title="Instructional Video"
 					style="
 						position: absolute;
@@ -142,10 +289,6 @@
 				</iframe>
 			</div>
 			<ol>
-				<li>
-					Drag this button to your bookmarks bar:
-					<a id="bookmarklet" href="#">Copy Grades</a>
-				</li>
 				<li>Go to Moodle's gradebook page.</li>
 				<li>Click the bookmarklet in your bookmarks bar.</li>
 				<li>
@@ -189,7 +332,9 @@
 				</li>
 				<li>
 					View the source code on
-					<a href="https://github.com/VikramSinghMTL/moodlea"
+					<a
+						href="https://github.com/VikramSinghMTL/moodlea"
+						target="_blank"
 						>GitHub</a
 					>.
 				</li>
