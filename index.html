@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>💯</text></svg>"
+		/>
+		<title>Moodle Grade Export Bookmarklet</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			body {
+				font-family: 'Inter', sans-serif;
+				margin: 0;
+				padding: 0;
+				background-color: #f9f9f9;
+				color: #333;
+				line-height: 1.6;
+			}
+			header {
+				background-color: #007bff;
+				color: white;
+				padding: 20px 0;
+				text-align: center;
+			}
+			header h1 {
+				margin: 0;
+				font-weight: 700;
+				font-size: 2rem;
+			}
+			main {
+				padding: 3em;
+				max-width: 800px;
+				margin: 0 auto;
+				background: white;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				border-radius: 0 0 8px 8px;
+			}
+			h2 {
+				color: #0056b3;
+				margin-top: 1.5em;
+			}
+			#bookmarklet {
+				display: inline-block;
+				padding: 12px 20px;
+				background-color: #007bff;
+				color: white;
+				text-decoration: none;
+				border-radius: 5px;
+				font-weight: 500;
+				font-size: 1rem;
+				transition: background-color 0.3s;
+			}
+			#bookmarklet:hover {
+				background-color: #0056b3;
+			}
+			ul,
+			ol {
+				margin: 10px 0 20px 20px;
+				padding: 0;
+			}
+			li {
+				margin-bottom: 10px;
+			}
+			pre {
+				background: #f4f4f4;
+				padding: 15px;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+				overflow-x: auto;
+				font-size: 0.9rem;
+			}
+			footer {
+				text-align: center;
+				margin: 20px 0;
+				color: #666;
+				font-size: 0.85rem;
+			}
+		</style>
+		<script>
+			async function loadBookmarklet() {
+				const response = await fetch('bookmarklet.js');
+				const script = await response.text();
+				const minified = script.replace(/\s+/g, ' ').trim(); // Minify
+				const encoded = `javascript:${encodeURIComponent(minified)}`;
+				document.getElementById('bookmarklet').href = encoded;
+			}
+			loadBookmarklet();
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Moodle Grades to Clipboard</h1>
+		</header>
+		<main>
+			<p>
+				This bookmarklet helps you extract grades from the Moodle
+				gradebook and easily transfer them to Lea's "Import Results"
+				page.
+			</p>
+
+			<h2>How to Use</h2>
+			<div
+				style="
+					position: relative;
+					width: 100%;
+					padding-bottom: 56.25%;
+					height: 0;
+					margin-top: 20px;
+				"
+			>
+				<iframe
+					src="https://www.youtube.com/embed/Uah-58YN8gY"
+					title="Instructional Video"
+					style="
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						border: none;
+					"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen
+				>
+				</iframe>
+			</div>
+			<ol>
+				<li>
+					Drag this button to your bookmarks bar:
+					<a id="bookmarklet" href="#">Copy Grades</a>
+				</li>
+				<li>Go to Moodle's gradebook page.</li>
+				<li>Click the bookmarklet in your bookmarks bar.</li>
+				<li>
+					Select the assessment and specify how empty grades should be
+					handled.
+				</li>
+				<li>
+					Paste the copied grades into Lea's "Import Results" page.
+				</li>
+			</ol>
+
+			<h2>Notes</h2>
+			<ul>
+				<li>This bookmarklet works only on Moodle's gradebook page.</li>
+				<li>
+					If you have multiple sections and have merged them in one
+					Moodle, you can still paste the grades in Lea's "Import
+					Results" page. Lea will ignore the extra grades.
+				</li>
+				<li>
+					If you encounter any issues, feel free to
+					<a href="mailto:vikram.singh@johnabbott.qc.ca">email me</a>.
+				</li>
+			</ul>
+		</main>
+		<footer>© 2024 Vikram Singh. All Rights Reserved.</footer>
+	</body>
+</html>
