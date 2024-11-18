@@ -1,45 +1,52 @@
-# 💯 Moodle Grades to Clipboard Bookmarklet
+# Moodle Grade Export Bookmarklet
 
-This repository contains a bookmarklet that helps teachers easily export grades from Moodle's gradebook and paste them into Lea’s "Import Results" page.
+This bookmarklet simplifies the process of extracting grades from Moodle's gradebook and transferring them directly to Lea's "Import Results" page.
 
-## How It Works
+## Features
 
-The bookmarklet simplifies the process of transferring grades between Moodle and Lea by:
+-   Supports single and multiple assessments.
+-   Automatically sums grades if multiple assessments are selected.
+-   Allows customization of values for empty grades.
+-   Generates clipboard-ready output for quick pasting into Lea.
 
--   Extracting grades from Moodle’s gradebook.
--   Formatting them for Lea's "Import Results" textarea.
--   Copying the data to the clipboard for easy pasting.
+## How to Use
 
-## Getting Started
+1. Drag the "Copy Grades" button from the [website](https://vikramsinghmtl.github.io/moodlea/) to your bookmarks bar.
 
-1. [Visit the bookmarklet page hosted on GitHub Pages.](https://vikramsinghmtl.github.io/moodlea/)
+2. Navigate to your course's gradebook page on Moodle.
 
-2. Drag the **Copy Grades** button from the page to your browser's bookmarks bar.
+3. Click the bookmarklet in your bookmarks bar:
 
-3. Follow the instructions on the webpage to use the bookmarklet.
+    - Select one or more assessments.
+    - Specify a value for empty grades (optional).
+    - If multiple assessments are selected, grades will be summed for each student.
 
-## Usage
+4. The grades will be copied to your clipboard. Paste them into Lea's "Import Results" page.
 
-1. **On Moodle**:
+## Additional Notes
 
-    - Go to the Moodle gradebook page.
-    - Click the bookmarklet in your bookmarks bar.
-    - Select the assessment and specify how to handle empty grades.
-    - The grades are copied to your clipboard.
+-   Ensure all students are displayed in the Moodle grader report (use the "Show" dropdown in the bottom-left corner).
+-   To display real values instead of percentages in Moodle:
+    1. Go to "Course grade settings" in the "Grader report" dropdown.
+    2. Change the "Grade display type" to "Real" under "Grade item settings."
 
-2. **On Lea**:
-    - Go to Lea's "Import Results" page.
-    - Paste the copied grades into the textarea.
+## Resources
 
-## Notes
+-   **Video Tutorial**
+    [Watch this instructional video](https://www.youtube.com/embed/Uah-58YN8gY) for a detailed walkthrough.
 
--   This bookmarklet works only on Moodle's gradebook page and Lea's import results page.
--   If you encounter issues, ensure you are on the correct pages and try again.
+-   **Contact**
+    If you encounter any issues, feel free to [email me](mailto:vikram.singh@johnabbott.qc.ca).
 
-## Contributing
-
-If you'd like to contribute improvements or report issues, feel free to open a pull request, open an issue in this repository, or [email me](mailto:vikram.singh@johnabbott.qc.ca).
+-   **Source Code**
+    View the project on [GitHub](https://github.com/VikramSinghMTL/moodlea).
 
 ## License
 
 This project is open-source and available under the [Creative Commons License](LICENSE).
+
+---
+
+### Disclaimer
+
+This tool is designed for use with Moodle and Lea systems and may not work with other platforms.
