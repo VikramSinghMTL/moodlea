@@ -85,8 +85,20 @@
 			async function loadBookmarklet() {
 				const response = await fetch('bookmarklet.js');
 				const script = await response.text();
-				const minified = script.replace(/\s+/g, ' ').trim(); // Minify
+
+				// Remove comments (single-line and multi-line)
+				const withoutComments = script.replace(
+					/\/\/.*|\/\*[\s\S]*?\*\//g,
+					''
+				);
+
+				// Remove newlines and extra spaces
+				const minified = withoutComments.replace(/\s+/g, ' ').trim();
+
+				// Encode the minified script for the bookmarklet
 				const encoded = `javascript:${encodeURIComponent(minified)}`;
+
+				// Set the bookmarklet href
 				document.getElementById('bookmarklet').href = encoded;
 			}
 			loadBookmarklet();
@@ -137,8 +149,13 @@
 				<li>Go to Moodle's gradebook page.</li>
 				<li>Click the bookmarklet in your bookmarks bar.</li>
 				<li>
-					Select the assessment and specify how empty grades should be
-					handled.
+					Select the assessment(s) and specify how empty grades should
+					be handled. To select multiple assessments, hold down the
+					Ctrl (Windows) or Cmd (Mac) key while clicking on the
+					assessments. If multiple assessments are selected, their
+					grades will be summed up for each student and copied to the
+					clipboard. This is handy if you have multiple Moodle
+					activities for a single Lea gradebook item.
 				</li>
 				<li>
 					Paste the copied grades into Lea's "Import Results" page.
@@ -154,10 +171,28 @@
 					Results" page. Lea will ignore the extra grades.
 				</li>
 				<li>
+					Make sure to list all students using the "Show" dropdown
+					menu in the bottom left corner of the Moodle grader report,
+					otherwise all of the grades will not be copied.
+				</li>
+				<li>
+					If you want to copy real values instead of percentages, you
+					can change the grade display type by clicking on "Grader
+					report" dropdown on the top right of the Grades page, go to
+					"Course grade settings", and change the "Grade display type"
+					value.
+				</li>
+
+				<li>
 					If you encounter any issues, feel free to
 					<a href="mailto:vikram.singh@johnabbott.qc.ca">email me</a>.
 				</li>
-				<li>View the source code on <a href="https://github.com/VikramSinghMTL/moodlea">GitHub</a></li>
+				<li>
+					View the source code on
+					<a href="https://github.com/VikramSinghMTL/moodlea"
+						>GitHub</a
+					>.
+				</li>
 			</ul>
 		</main>
 		<footer>© 2024 Vikram Singh. All Rights Reserved.</footer>

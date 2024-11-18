@@ -1,12 +1,14 @@
 (function () {
 	let extractedData = '';
-	const gradeTable = document.querySelector('#user-grades');
 
+	// Select the Moodle grade table
+	const gradeTable = document.querySelector('#user-grades');
 	if (!gradeTable) {
 		alert('This bookmarklet only works on the Moodle gradebook page.');
 		return;
 	}
 
+	// Get headers for all grade items
 	const headers = Array.from(
 		gradeTable.querySelectorAll('th[data-itemid] a.gradeitemheader')
 	);
@@ -16,16 +18,19 @@
 		return;
 	}
 
+	// Map assessments with names and IDs
 	const assessments = headers.map((link) => ({
 		name: link.getAttribute('title') || link.textContent.trim(),
 		itemid: link.closest('th').getAttribute('data-itemid'),
 	}));
-	let modal = document.getElementById('assessmentModal');
 
+	// Remove existing modal if already open
+	let modal = document.getElementById('assessmentModal');
 	if (modal) {
 		modal.remove();
 	}
 
+	// Create the modal
 	modal = document.createElement('div');
 	modal.id = 'assessmentModal';
 	modal.style.position = 'fixed';
@@ -37,12 +42,18 @@
 	modal.style.padding = '20px';
 	modal.style.zIndex = '10000';
 	modal.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+
+	// Label for multi-selection
 	const label = document.createElement('label');
-	label.textContent = 'Select an assessment:';
+	label.textContent =
+		'Select assessments to sum, CTRL/CMD click to select multiple:';
 	label.style.display = 'block';
 	label.style.marginBottom = '10px';
 	modal.appendChild(label);
+
+	// Multi-select box
 	const select = document.createElement('select');
+	select.multiple = true;
 	select.style.width = '100%';
 	select.style.marginBottom = '10px';
 	select.style.padding = '5px';
@@ -54,11 +65,14 @@
 		select.appendChild(option);
 	});
 	modal.appendChild(select);
+
+	// Input for handling empty grades
 	const emptyLabel = document.createElement('label');
 	emptyLabel.textContent = 'Value to use for empty grades:';
 	emptyLabel.style.display = 'block';
 	emptyLabel.style.marginBottom = '10px';
 	modal.appendChild(emptyLabel);
+
 	const emptyInput = document.createElement('input');
 	emptyInput.type = 'text';
 	emptyInput.placeholder = 'Leave empty for blanks';
@@ -67,6 +81,8 @@
 	emptyInput.style.padding = '5px';
 	emptyInput.style.fontSize = '16px';
 	modal.appendChild(emptyInput);
+
+	// Extract grades button
 	const button = document.createElement('button');
 	button.textContent = 'Extract Grades';
 	button.style.display = 'block';
@@ -77,50 +93,81 @@
 	button.style.border = 'none';
 	button.style.borderRadius = '5px';
 	button.style.cursor = 'pointer';
+
+	// Button onclick handler
 	button.onclick = function () {
-		const index = parseInt(select.value);
-		const selectedAssessment = assessments[index];
+		// Get selected assessments and empty grade value
+		const selectedIndexes = Array.from(select.selectedOptions).map(
+			(option) => parseInt(option.value)
+		);
+		const selectedAssessments = selectedIndexes.map(
+			(index) => assessments[index]
+		);
 		const emptyValue = emptyInput.value.trim();
 		modal.remove();
+
+		// Extract grades
 		const rows = Array.from(gradeTable.querySelectorAll('tr'));
 		const gradeData = rows
 			.map((row) => {
 				const idCell = row.querySelector('td.cell.c1');
-				const gradeCell = row.querySelector(
-					`td[data-itemid="${selectedAssessment.itemid}"]`
-				);
-				if (idCell && gradeCell) {
-					const id = idCell.textContent.trim().split('@')[0];
-					if (id === '-') {
-						return null;
+				if (!idCell) return null;
+
+				const id = idCell.textContent.trim().split('@')[0];
+				if (id === '-') return null;
+
+				let totalGrade = 0;
+				let hasValidGrade = false;
+
+				selectedAssessments.forEach((assessment) => {
+					const gradeCell = row.querySelector(
+						`td[data-itemid="${assessment.itemid}"]`
+					);
+					let grade = 0;
+
+					if (gradeCell) {
+						// Check for input field in edit mode
+						if (gradeCell.querySelector('input')) {
+							grade =
+								parseFloat(
+									gradeCell.querySelector('input').value
+								) ||
+								parseFloat(emptyValue) ||
+								0;
+						} else {
+							// Check for grade value in view mode
+							const gradeValue =
+								gradeCell.querySelector('.gradevalue');
+							grade = parseFloat(
+								gradeValue
+									? gradeValue.textContent
+											.trim()
+											.replace('%', '')
+									: emptyValue || 0
+							);
+						}
+						if (!isNaN(grade)) {
+							hasValidGrade = true;
+							totalGrade += grade;
+						}
 					}
-					let grade;
-					if (gradeCell.querySelector('input')) {
-						grade =
-							gradeCell.querySelector('input').value ||
-							emptyValue;
-					} else {
-						const gradeValue =
-							gradeCell.querySelector('.gradevalue');
-						grade = gradeValue
-							? gradeValue.textContent.trim().replace('%', '')
-							: '-';
-					}
-					if (grade === '-') {
-						grade = emptyValue;
-					}
-					return `${id}\t${grade}`;
+				});
+
+				if (!hasValidGrade) {
+					totalGrade = emptyValue || '';
 				}
-				return null;
+
+				return `${id}\t${totalGrade}`;
 			})
 			.filter((row) => row !== null)
 			.join('\n');
 
 		if (!gradeData) {
-			alert('No grades found for the selected assessment.');
+			alert('No grades found for the selected assessments.');
 			return;
 		}
 
+		// Copy to clipboard
 		extractedData = gradeData;
 		navigator.clipboard
 			.writeText(extractedData)
