@@ -12,7 +12,7 @@ The bookmarklet simplifies the process of transferring grades between Moodle and
 
 ## Getting Started
 
-1. [Visit the bookmarklet page hosted on GitHub Pages.](https://john-abbott-college.github.io/moodle-grades-to-clipboard/)
+1. [Visit the bookmarklet page hosted on GitHub Pages.](https://vikramsinghmtl.github.io/moodlea/)
 
 2. Drag the **Copy Grades** button from the page to your browser's bookmarks bar.
 
