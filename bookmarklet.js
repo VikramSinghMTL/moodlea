@@ -58,6 +58,9 @@
 	select.style.marginBottom = '10px';
 	select.style.padding = '5px';
 	select.style.fontSize = '16px';
+	select.style.height = '40vh'; // Adjust height dynamically with max cap
+	select.style.overflowY = 'auto'; // Add scrollbar if content exceeds max height
+	select.style.display = 'block';
 	assessments.forEach((a, i) => {
 		const option = document.createElement('option');
 		option.value = i;
@@ -82,6 +85,23 @@
 	emptyInput.style.fontSize = '16px';
 	modal.appendChild(emptyInput);
 
+	// Input for rounding decimal places
+	const roundingLabel = document.createElement('label');
+	roundingLabel.textContent =
+		'Round grades to how many decimal places? (Leave blank for no rounding):';
+	roundingLabel.style.display = 'block';
+	roundingLabel.style.marginBottom = '10px';
+	modal.appendChild(roundingLabel);
+
+	const roundingInput = document.createElement('input');
+	roundingInput.type = 'number';
+	roundingInput.placeholder = 'e.g., 2';
+	roundingInput.style.width = '100%';
+	roundingInput.style.marginBottom = '10px';
+	roundingInput.style.padding = '5px';
+	roundingInput.style.fontSize = '16px';
+	modal.appendChild(roundingInput);
+
 	// Extract grades button
 	const button = document.createElement('button');
 	button.textContent = 'Extract Grades';
@@ -104,6 +124,8 @@
 			(index) => assessments[index]
 		);
 		const emptyValue = emptyInput.value.trim();
+		const roundingPlaces = parseInt(roundingInput.value.trim(), 10);
+
 		modal.remove();
 
 		// Extract grades
@@ -157,7 +179,12 @@
 					totalGrade = emptyValue || '';
 				}
 
-				return `${id}\t${totalGrade}`;
+				const roundedGrade =
+					typeof totalGrade === 'number' && !isNaN(totalGrade)
+						? totalGrade.toFixed(roundingPlaces)
+						: totalGrade;
+
+				return `${id}\t${roundedGrade}`;
 			})
 			.filter((row) => row !== null)
 			.join('\n');
