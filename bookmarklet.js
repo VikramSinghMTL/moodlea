@@ -102,6 +102,19 @@
 	roundingInput.style.fontSize = '16px';
 	modal.appendChild(roundingInput);
 
+	// Toggle for including student ID
+	const toggleLabel = document.createElement('label');
+	toggleLabel.textContent = 'Include Student ID in output:';
+	toggleLabel.style.display = 'block';
+	toggleLabel.style.marginBottom = '10px';
+	modal.appendChild(toggleLabel);
+
+	const toggleInput = document.createElement('input');
+	toggleInput.type = 'checkbox';
+	toggleInput.checked = true; // Default to include ID
+	toggleInput.style.marginBottom = '20px';
+	modal.appendChild(toggleInput);
+
 	// Extract grades button
 	const button = document.createElement('button');
 	button.textContent = 'Extract Grades';
@@ -184,7 +197,9 @@
 						? totalGrade.toFixed(roundingPlaces)
 						: totalGrade;
 
-				return `${id}\t${roundedGrade}`;
+				return toggleInput.checked
+					? `${id}\t${roundedGrade}`
+					: `${roundedGrade}`;
 			})
 			.filter((row) => row !== null)
 			.join('\n');
