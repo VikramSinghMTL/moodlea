@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
--   Added toggle for student ID.
+-   Added a toggle for student ID.
 
 ## [1.2.0](https://github.com/VikramSinghMTL/moodlea/releases/tag/v1.2.0) - 2024-11-20
 
