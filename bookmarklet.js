@@ -10,7 +10,7 @@
 
 	// Get headers for all grade items
 	const headers = Array.from(
-		gradeTable.querySelectorAll('th[data-itemid] a.gradeitemheader')
+		gradeTable.querySelectorAll('th[data-itemid] .gradeitemheader')
 	);
 
 	if (!headers.length) {
