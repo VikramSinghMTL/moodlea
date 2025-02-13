@@ -39,6 +39,7 @@
 	modal.style.transform = 'translate(-50%, 0)';
 	modal.style.backgroundColor = '#fff';
 	modal.style.border = '1px solid #ccc';
+	modal.style.borderRadius = '10px';
 	modal.style.padding = '20px';
 	modal.style.zIndex = '10000';
 	modal.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
@@ -69,51 +70,123 @@
 	});
 	modal.appendChild(select);
 
+	// Add container styles to align label and input
+	function createInputRow(label, input) {
+		const row = document.createElement('div');
+		row.style.display = 'flex';
+		row.style.alignItems = 'center';
+		row.style.justifyContent = 'space-between';
+		row.style.marginBottom = '15px';
+		row.appendChild(label);
+		row.appendChild(input);
+		return row;
+	}
+
 	// Input for handling empty grades
 	const emptyLabel = document.createElement('label');
-	emptyLabel.textContent = 'Value to use for empty grades:';
-	emptyLabel.style.display = 'block';
-	emptyLabel.style.marginBottom = '10px';
-	modal.appendChild(emptyLabel);
+	emptyLabel.textContent = 'Value for empty grades:';
+	emptyLabel.style.fontSize = '16px';
 
 	const emptyInput = document.createElement('input');
 	emptyInput.type = 'text';
-	emptyInput.placeholder = 'Leave empty for blanks';
-	emptyInput.style.width = '100%';
-	emptyInput.style.marginBottom = '10px';
+	emptyInput.placeholder = 'Leave blank for empty.';
 	emptyInput.style.padding = '5px';
-	emptyInput.style.fontSize = '16px';
-	modal.appendChild(emptyInput);
+	emptyInput.style.fontSize = '14px';
+	emptyInput.style.flex = '1'; // Ensures input stretches within row
+	emptyInput.style.marginLeft = '10px';
+
+	// Add to modal
+	modal.appendChild(createInputRow(emptyLabel, emptyInput));
 
 	// Input for rounding decimal places
 	const roundingLabel = document.createElement('label');
-	roundingLabel.textContent =
-		'Round grades to how many decimal places? (Leave blank for no rounding):';
-	roundingLabel.style.display = 'block';
-	roundingLabel.style.marginBottom = '10px';
-	modal.appendChild(roundingLabel);
+	roundingLabel.textContent = 'Decimal places:';
+	roundingLabel.style.fontSize = '16px';
 
 	const roundingInput = document.createElement('input');
 	roundingInput.type = 'number';
-	roundingInput.placeholder = 'e.g., 2';
-	roundingInput.style.width = '100%';
-	roundingInput.style.marginBottom = '10px';
+	roundingInput.placeholder = 'Leave blank for none.';
 	roundingInput.style.padding = '5px';
-	roundingInput.style.fontSize = '16px';
-	modal.appendChild(roundingInput);
+	roundingInput.style.fontSize = '14px';
+	roundingInput.style.flex = '1';
+	roundingInput.style.marginLeft = '10px';
+
+	// Add to modal
+	modal.appendChild(createInputRow(roundingLabel, roundingInput));
 
 	// Toggle for including student ID
 	const toggleLabel = document.createElement('label');
-	toggleLabel.textContent = 'Include Student ID in output:';
-	toggleLabel.style.display = 'block';
-	toggleLabel.style.marginBottom = '10px';
-	modal.appendChild(toggleLabel);
+	toggleLabel.textContent = 'Include Student ID:';
+	toggleLabel.style.fontSize = '16px';
+
+	// Create slider toggle
+	const toggleWrapper = document.createElement('div');
+	toggleWrapper.style.position = 'relative';
+	toggleWrapper.style.width = '40px';
+	toggleWrapper.style.height = '20px';
+	toggleWrapper.style.backgroundColor = '#007bff';
+	toggleWrapper.style.borderRadius = '20px';
+	toggleWrapper.style.cursor = 'pointer';
+	toggleWrapper.style.marginLeft = '10px';
 
 	const toggleInput = document.createElement('input');
 	toggleInput.type = 'checkbox';
 	toggleInput.checked = true; // Default to include ID
-	toggleInput.style.marginBottom = '20px';
-	modal.appendChild(toggleInput);
+	toggleInput.style.opacity = '0';
+	toggleInput.style.width = '0';
+	toggleInput.style.height = '0';
+	toggleInput.style.position = 'absolute';
+
+	const toggleIndicator = document.createElement('span');
+	toggleIndicator.style.position = 'absolute';
+	toggleIndicator.style.top = '2px';
+	toggleIndicator.style.left = '2px';
+	toggleIndicator.style.width = '16px';
+	toggleIndicator.style.height = '16px';
+	toggleIndicator.style.backgroundColor = 'white';
+	toggleIndicator.style.borderRadius = '50%';
+	toggleIndicator.style.transition = 'all 0.3s';
+	toggleIndicator.style.transform = 'translateX(20px)';
+
+	// Handle click events on toggleWrapper
+	toggleWrapper.addEventListener('click', () => {
+		toggleInput.checked = !toggleInput.checked; // Toggle the checkbox state
+		if (toggleInput.checked) {
+			toggleWrapper.style.backgroundColor = '#007bff';
+			toggleIndicator.style.transform = 'translateX(20px)';
+		} else {
+			toggleWrapper.style.backgroundColor = '#ccc';
+			toggleIndicator.style.transform = 'translateX(0)';
+		}
+	});
+
+	toggleWrapper.appendChild(toggleInput);
+	toggleWrapper.appendChild(toggleIndicator);
+
+	// Add to modal
+	modal.appendChild(createInputRow(toggleLabel, toggleWrapper));
+
+	// Dismiss modal functionality
+	const dismissButton = document.createElement('button');
+	dismissButton.textContent = '×';
+	dismissButton.style.position = 'absolute';
+	dismissButton.style.top = '-5px';
+	dismissButton.style.right = '0';
+	dismissButton.style.background = 'none';
+	dismissButton.style.border = 'none';
+	dismissButton.style.fontSize = '20px';
+	dismissButton.style.cursor = 'pointer';
+
+	// Remove modal on click
+	dismissButton.onclick = () => modal.remove();
+	modal.appendChild(dismissButton);
+
+	// Dismiss modal by clicking outside
+	document.addEventListener('click', (event) => {
+		if (!modal.contains(event.target)) {
+			modal.remove();
+		}
+	});
 
 	// Extract grades button
 	const button = document.createElement('button');
